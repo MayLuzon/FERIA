@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import {
+// app.js
+const { useState, useEffect } = React;
+const {
   Trash2,
   Plus,
   Award,
@@ -10,9 +11,9 @@ import {
   Trophy,
   Lock,
   RotateCcw,
-} from "lucide-react";
+} = lucideReact;
 
-export default function SistemaCalificacion() {
+function SistemaCalificacion() {
   const [perfil, setPerfil] = useState(null);
   const [juradoActual, setJuradoActual] = useState("");
   const [proyectos, setProyectos] = useState([]);
@@ -20,29 +21,15 @@ export default function SistemaCalificacion() {
 
   // ---------- CARGA INICIAL ----------
   useEffect(() => {
-    const cargarProyectos = async () => {
-      try {
-        const saved = await window.storage.get("proyectos-calificacion");
-        if (saved) {
-          setProyectos(JSON.parse(saved));
-        }
-      } catch (e) {
-        console.error("Error al cargar proyectos", e);
-      }
-    };
-    cargarProyectos();
+    const saved = window.localStorage.getItem("proyectos-calificacion");
+    if (saved) {
+      setProyectos(JSON.parse(saved));
+    }
   }, []);
 
   // ---------- GUARDAR ----------
-  const guardarProyectos = async (lista) => {
-    try {
-      await window.storage.set(
-        "proyectos-calificacion",
-        JSON.stringify(lista)
-      );
-    } catch (e) {
-      console.error("Error al guardar", e);
-    }
+  const guardarProyectos = (lista) => {
+    window.localStorage.setItem("proyectos-calificacion", JSON.stringify(lista));
   };
 
   // ---------- AÑADIR PROYECTO ----------
@@ -90,23 +77,18 @@ export default function SistemaCalificacion() {
   };
 
   // ---------- RESET CALIFICACIONES ----------
-  const resetearCalificaciones = async () => {
+  const resetearCalificaciones = () => {
     if (!window.confirm("¿Seguro que quieres borrar TODAS las calificaciones?"))
       return;
 
-    const lista = proyectos.map((p) => ({
-      ...p,
-      calificaciones: {},
-    }));
-
+    const lista = proyectos.map((p) => ({ ...p, calificaciones: {} }));
     setProyectos(lista);
-    await guardarProyectos(lista);
-
+    guardarProyectos(lista);
     alert("Calificaciones borradas correctamente");
   };
 
   // ---------- REINICIAR SISTEMA ----------
-  const reiniciarSistema = async () => {
+  const reiniciarSistema = () => {
     if (
       !window.confirm(
         "⚠ Esto borrará todos los proyectos y cargará los nuevos. ¿Continuar?"
@@ -128,13 +110,8 @@ export default function SistemaCalificacion() {
       { id: 11, nombre: "2º DAW", calificaciones: {} },
     ];
 
-    await window.storage.set(
-      "proyectos-calificacion",
-      JSON.stringify(nuevosProyectos)
-    );
-
     setProyectos(nuevosProyectos);
-
+    guardarProyectos(nuevosProyectos);
     alert("Sistema reiniciado correctamente");
   };
 
@@ -176,16 +153,10 @@ export default function SistemaCalificacion() {
       {/* Lista de proyectos */}
       <div className="space-y-4">
         {proyectos.map((p) => (
-          <div
-            key={p.id}
-            className="border p-4 rounded shadow-sm bg-white"
-          >
+          <div key={p.id} className="border p-4 rounded shadow-sm bg-white">
             <div className="flex justify-between mb-2">
               <strong>{p.nombre}</strong>
-              <button
-                onClick={() => borrarProyecto(p.id)}
-                className="text-red-600"
-              >
+              <button onClick={() => borrarProyecto(p.id)} className="text-red-600">
                 <Trash2 />
               </button>
             </div>
@@ -233,3 +204,6 @@ export default function SistemaCalificacion() {
     </div>
   );
 }
+
+// Montar el componente en el HTML
+ReactDOM.createRoot(document.getElementById("root")).render(<SistemaCalificacion />);
