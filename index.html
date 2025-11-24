@@ -1,18 +1,29 @@
+~~~{"variant":"standard","title":"HTML completo para React + App.js","id":"97041"}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Sistema de Calificación</title>
+  
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- React y ReactDOM -->
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- Babel para JSX en navegador -->
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css">
+
+  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide-react/dist/umd/lucide-react.js"></script>
 </head>
 <body class="bg-gray-100 p-6">
+  <!-- Contenedor de React -->
   <div id="root"></div>
 
-  <!-- Tu React con JSX -->
+  <!-- Tu aplicación React -->
   <script type="text/babel" src="app.js"></script>
 </body>
 </html>
+~~~
